@@ -53,3 +53,31 @@ exports.getallcourse = async (req, res)=>{
         msg: "success"
     })
 };
+
+
+exports.getallcoursedetails = async (req, res)=>{
+    try{
+        const {courseId} = req.body;
+        // find the course details
+        const coursedetails = await Course.find({_id: courseId}).populate({
+            path:"instructor",
+            populate:{
+                path: "additionaldetails"
+            }
+        }).populate("category").populate("ratingAndReviews").populate({
+            path: "courseContent",
+            populate:{
+                path: "subSection"
+            }
+        }).exec();
+
+        // validation
+
+
+    } catch(err){
+        return res.json({
+            msg: "err fetching course details"
+        })
+    }
+}
+
